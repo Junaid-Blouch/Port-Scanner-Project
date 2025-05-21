@@ -1,15 +1,38 @@
-# Port Scanner - Information Security Lab Project 01
-# Created by Muhammad Junaid
+# ---------------------------
+# Port Scanner Project
+# Developed by: Muhammad Junaid
+# University: MNS UET Multan
+# Subject: Information Security Lab
+# ---------------------------
 
 import socket
 
-target = input("Enter the IP address to scan: ")
-print("Scanning target:", target)
+# Set the target IP address (localhost)
+target = "127.0.0.1"  # You can change this to scan another IP
 
-for port in range(1, 1025):
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    socket.setdefaulttimeout(0.5)
-    result = s.connect_ex((target, port))
-    if result == 0:
-        print(f"Port {port} is open")
-    s.close()
+# Function to check if a specific port is open
+def portScanner(port):
+    try:
+        # Create a new socket
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        
+        # Try to connect to the target port
+        sock.connect((target, port))
+        
+        # Close the socket after checking
+        sock.close()
+        return True
+    except:
+        return False
+
+# Loop through port numbers from 1 to 1024
+for port in range(1, 1025):  # 1025 included for complete scan
+    result = portScanner(port)
+
+    if result:
+        print(f"Port {port} is OPEN!")
+    else:
+        print(f"Port {port} is CLOSED!")
+
+# Optional: Test for a specific port
+print("Testing custom port (8080):", portScanner(8080))
